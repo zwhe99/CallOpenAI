@@ -378,6 +378,8 @@ class CallOpenAI:
             logging.info(f"{self.status_tracker.num_tasks_failed} tasks failed.")
 
 if __name__ == "__main__":
+    import requests # for checking the location
+
     def input_to_requests_func(input_file_path: str, output_file_path: str) -> list:
         """
         Convert input file to a list of requests for OpenAI API.
@@ -470,6 +472,16 @@ if __name__ == "__main__":
         with open(output_file_path, "w") as f:
             for t in translations:
                 f.write(f"{t}\n")
+
+    def valid_location():
+        res = requests.get('https://ipinfo.io', timeout=5).text
+        res = json.loads(res)
+        country = res.get('country', '')
+        print(json.dumps(res, indent=2))
+        return country not in ["HK", "CN"]
+
+    assert valid_location(), "Invalid location"
+    assert os.getenv("OPENAI_API_KEY"), "Set the OPENAI_API_KEY environment variable"
 
     openai_caller = CallOpenAI(
         request_url="https://api.openai.com/v1/chat/completions",
