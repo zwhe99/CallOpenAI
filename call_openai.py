@@ -169,7 +169,7 @@ class APIRequest:
                 "response": response,
                 "metadata": self.metadata if self.metadata else None
             }
-            response_to_output_func(data, save_filepath)
+            self.response_to_output_func(data, save_filepath)
             status_tracker.num_tasks_in_progress -= 1
             status_tracker.num_tasks_succeeded += 1
             progress_bar.update(n=1)
