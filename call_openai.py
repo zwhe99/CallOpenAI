@@ -507,7 +507,7 @@ if __name__ == "__main__":
         res = json.loads(res)
         country = res.get('country', '')
         print(json.dumps(res, indent=2))
-        return country not in ["HK", "CN"]
+        return country not in ["HK", "CN", "RU"]
 
     assert valid_location(), "Invalid location"
     assert os.getenv("OPENAI_API_KEY"), "Set the OPENAI_API_KEY environment variable"
