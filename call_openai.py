@@ -184,7 +184,7 @@ class CallOpenAI:
         output_file_path,
         input_to_requests_func,
         response_to_output_func,
-        is_all_done=None,
+        is_all_done_func=None,
         post_run_func=None,
         max_attempts=5,
         seconds_to_pause_after_rate_limit_error=15,
@@ -198,7 +198,7 @@ class CallOpenAI:
         self.output_file_path = output_file_path
         self.input_to_requests_func = input_to_requests_func
         self.response_to_output_func = response_to_output_func
-        self.is_all_done = is_all_done
+        self.is_all_done_func = is_all_done_func
         self.post_run_func = post_run_func
         self.api_endpoint = api_endpoint_from_url(request_url)
         self.max_attempts = max_attempts
@@ -253,7 +253,7 @@ class CallOpenAI:
         self.response_to_output_func = response_to_output_func
 
     async def run(self):
-        if self.is_all_done is not None and self.is_all_done(self.input_file_path, self.output_file_path):
+        if self.is_all_done_func is not None and self.is_all_done_func(self.input_file_path, self.output_file_path):
             logging.info("All done!")
             return
 
@@ -491,6 +491,9 @@ if __name__ == "__main__":
             bool: True if all the requests have been done, False otherwise.
         """
 
+        if not os.path.isfile(output_file_path):
+            return False
+
         with open(input_file_path, "r") as f:
             num_requests = len(f.readlines())
 
@@ -520,7 +523,7 @@ if __name__ == "__main__":
         input_to_requests_func=input_to_requests_func,
         response_to_output_func=response_to_output_func,
         post_run_func=post_run_func,
-        is_all_done=is_all_done
+        is_all_done_func=is_all_done
     )
 
     asyncio.run(
