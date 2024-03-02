@@ -516,7 +516,7 @@ if __name__ == "__main__":
         output_file_path="wmt22.en-zh.zh",
         max_attempts=1,
 
-        # Set the functions for converting input to requests, converting response to output
+        # Set the functions for converting input to requests, converting response to output, running after all API calls are done, and checking if all requests have been done
         input_to_requests_func=input_to_requests_func,
         response_to_output_func=response_to_output_func,
         post_run_func=post_run_func,
