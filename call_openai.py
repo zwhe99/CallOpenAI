@@ -184,6 +184,7 @@ class CallOpenAI:
         output_file_path,
         input_to_requests_func,
         response_to_output_func,
+        is_all_done=None,
         post_run_func=None,
         max_attempts=5,
         seconds_to_pause_after_rate_limit_error=15,
@@ -197,6 +198,7 @@ class CallOpenAI:
         self.output_file_path = output_file_path
         self.input_to_requests_func = input_to_requests_func
         self.response_to_output_func = response_to_output_func
+        self.is_all_done = is_all_done
         self.post_run_func = post_run_func
         self.api_endpoint = api_endpoint_from_url(request_url)
         self.max_attempts = max_attempts
@@ -251,6 +253,10 @@ class CallOpenAI:
         self.response_to_output_func = response_to_output_func
 
     async def run(self):
+        if self.is_all_done is not None and self.is_all_done(self.input_file_path, self.output_file_path):
+            logging.info("All done!")
+            return
+
         requests = self.input_to_requests_func(self.input_file_path, self.output_file_path)
 
         # set progress bar
@@ -473,6 +479,26 @@ if __name__ == "__main__":
             for t in translations:
                 f.write(f"{t}\n")
 
+    def is_all_done(input_file_path: str, output_file_path: str) -> bool:
+        """
+        Check if all the requests in the input file have been done.
+
+        Args:
+            input_file_path (str): The path to the input file.
+            output_file_path (str): The path to the output file.
+
+        Returns:
+            bool: True if all the requests have been done, False otherwise.
+        """
+
+        with open(input_file_path, "r") as f:
+            num_requests = len(f.readlines())
+
+        with open(output_file_path, "r") as f:
+            num_done = len(f.readlines())
+
+        return num_requests == num_done
+
     def valid_location():
         res = requests.get('https://ipinfo.io', timeout=5).text
         res = json.loads(res)
@@ -490,10 +516,11 @@ if __name__ == "__main__":
         output_file_path="wmt22.en-zh.zh",
         max_attempts=1,
 
-        # Set the functions for converting input to requests, converting response to output and post-run
+        # Set the functions for converting input to requests, converting response to output
         input_to_requests_func=input_to_requests_func,
         response_to_output_func=response_to_output_func,
         post_run_func=post_run_func,
+        is_all_done=is_all_done
     )
 
     asyncio.run(
