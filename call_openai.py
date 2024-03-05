@@ -126,7 +126,7 @@ class APIRequest:
         retry_queue: asyncio.Queue,
         save_filepath: str,
         status_tracker: StatusTracker,
-        progress_bar = tqdm
+        progress_bar: tqdm
     ):
         """Calls the OpenAI API and saves results."""
         error = None
