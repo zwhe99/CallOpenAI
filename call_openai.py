@@ -297,7 +297,7 @@ class CallOpenAI:
         self.file_not_finished = True  # after file is empty, we'll skip reading it
 
         # Check input & output file
-        assert os.path.isfile(self.input_file_path), f"Input file {self.input_file_path} does NOT exist or is a dir."
+        # assert os.path.isfile(self.input_file_path), f"Input file {self.input_file_path} does NOT exist or is a dir."
 
         output_directory = os.path.dirname(self.output_file_path)
         if output_directory:
