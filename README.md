@@ -30,7 +30,7 @@ MODEL2TPM = {
 
 1. Set debug mode: `logging_level=logging.DEBUG`
 
-2. Tune `max_connections` and `seconds_to_sleep_each_loop` so that the printed speed (requests/min and tokens/min) reach rate limit.
+2. Tune `max_connections` and `seconds_to_sleep_each_loop` so that the printed speed (requests/min and tokens/min) reach set rate limit.
 
    *Note: The debug log prints overall speed. `MODEL2RPM` and `MODEL2TPM` are speed limit per URL.*
 
