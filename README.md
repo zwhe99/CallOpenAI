@@ -4,6 +4,8 @@
 python3 run.py --model_name xxx --request_urls http://xxx.xxx.xxx.xxx:8000/v1/chat/completions
 ```
 
+* See `run.py` for usage
+
 
 
 ##### Default Rate Limit (per minute per URL)

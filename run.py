@@ -135,7 +135,7 @@ if __name__ == "__main__":
             num_done = len(f.readlines())
 
         return num_requests == num_done
-    print(args.request_urls)
+
     openai_caller = CallOpenAI(
         request_urls=args.request_urls,
         api_key="dummy",
